@@ -1,16 +1,23 @@
 import os
 import pathlib
 
+def getFileList(dirName):
+    dirPath = pathlib.Path(dirName)
+    docFiles = list(dirPath.rglob('*.docx', case_sensitive=False))
+    return [f.name for f in docFiles]
+
 def main():
     mydir = input('Enter Dirname:')
     print(f'List of files in {mydir}')
 
-    dirPath = pathlib.Path(mydir)
-    docFiles = list(dirPath.rglob('*.docx'))
-
+    
     #print(docFiles)
     print('--------------------------------------------')
-    for f in docFiles:
-        print(f.name)
+    fileNames = getFileList(mydir)
+
+    print(fileNames)
+
+
+    
 
 main()
