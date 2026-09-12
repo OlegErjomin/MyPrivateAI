@@ -22,7 +22,7 @@ def main():
     print ("TF-IDF matrix")
     print(TFIDF)
 
-k     initDeepSeek()
+    initDeepSeek()
     createIndex(docTexts)
 
     
