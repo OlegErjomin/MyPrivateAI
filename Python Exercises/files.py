@@ -29,5 +29,3 @@ def extract_all_text_from_docx(file_path):
 
     return '\n'.join(full_text)
 
-
-main()

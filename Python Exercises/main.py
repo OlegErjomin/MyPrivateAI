@@ -2,6 +2,8 @@ import pathlib
 from files import uploadDocuments
 from typing import List
 from vectorize import vectorize
+from my_llama_index import initDeepSeek, createIndex
+
 
 def main():
     mydir = input('Enter Dirname:')
@@ -19,6 +21,10 @@ def main():
     TFIDF = vectorize(docTexts) 
     print ("TF-IDF matrix")
     print(TFIDF)
+
+k     initDeepSeek()
+    createIndex(docTexts)
+
     
 
 def getFileList(dirName: str):
