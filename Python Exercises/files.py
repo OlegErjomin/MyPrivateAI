@@ -1,33 +1,6 @@
-import os
-import pathlib
-from typing import List, Generator
 from docx import Document
 from docx.table import Table
 from docx.text.paragraph import Paragraph
-
-from sklearn.feature_extraction.text import TfidfVectorizer
-import pandas as pd
-
-def main():
-    mydir = input('Enter Dirname:')
-    print(f'List of files in {mydir}')
-    
-    #print(docFiles)
-    print('--------------------------------------------')
-    filePaths = getFileList(mydir)
-
-    #print(filePaths)
-    docTexts = uploadDocuments(filePaths)
-    print(f'Uploaded {len(docTexts)} documents')
-
-    TFIDF = vectorize(docTexts) 
-    print ("TF-IDF matrix")
-    print(TFIDF)
-
-def getFileList(dirName: str):
-    dirPath = pathlib.Path(dirName)
-    docFiles: List[pathlib.Path] = list(dirPath.rglob('*.docx', case_sensitive=False))
-    return [f.absolute() for f in docFiles if not f.name.startswith('~') ]
 
 def uploadDocuments(fileList):
     # Convert documents to plaintext
@@ -56,10 +29,5 @@ def extract_all_text_from_docx(file_path):
 
     return '\n'.join(full_text)
 
-def vectorize(docs):
-    vectorizer = TfidfVectorizer()
-    X = vectorizer.fit_transform(docs)
-    tfidf_data = pd.DataFrame(X.toarray(), columns=vectorizer.get_feature_names_out(), index=[f'{i+1}' for i in range(len(docs))])
-    return tfidf_data
 
 main()
