@@ -22,8 +22,11 @@ def main():
     print ("TF-IDF matrix")
     print(TFIDF)
 
-    initDeepSeek()
-    createIndex(docTexts)
+    try:
+        initDeepSeek()
+        createIndex(docTexts)
+    except:
+        print("ERROR occured")
 
     
 
