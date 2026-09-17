@@ -2,7 +2,7 @@ import pathlib
 from files import uploadDocuments
 from typing import List
 from vectorize import vectorize
-from my_llama_index import initDeepSeek, createIndex
+from my_llama_index import initLLM, createIndex
 
 
 def main():
@@ -23,7 +23,7 @@ def main():
     print(TFIDF)
 
     try:
-        initDeepSeek()
+        initLLM()
         createIndex(docTexts)
     except:
         print("ERROR occured")
