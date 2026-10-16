@@ -1,0 +1,18 @@
+﻿% own pack
+#include @"main.ph"
+
+% privately used packages
+#include @"pfc\multiThread\thread\thread.ph"
+#include @"pfc\multiThread\mutex\mutex.ph"
+#include @"pfc\string\string.ph"
+#include @"pfc\windowsApi\msxml_api\msxml_HTTP_api\msxml_HTTP_api.ph"
+#include @"pfc\web\json\json.ph"
+#include @"pfc\async\async.ph"
+#include @"pfc\commandLineParser\commandLineParser.ph"
+#include @"pfc\programControl\programControl.ph"
+#include @"pfc\console\console.ph"
+#include @"pfc\core.ph"
+#include @"pfc\stream\stream.ph"
+
+% implementations
+#include @"main.pro"
