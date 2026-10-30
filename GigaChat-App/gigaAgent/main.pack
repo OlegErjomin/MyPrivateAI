@@ -2,6 +2,8 @@
 #include @"main.ph"
 
 % privately used packages
+#include @"pfc\fileSystem\fileSystem.ph"
+#include @"pfc\web\json\json.ph"
 #include @"pfc\commandLineParser\commandLineParser.ph"
 #include @"pfc\programControl\programControl.ph"
 #include @"pfc\console\console.ph"

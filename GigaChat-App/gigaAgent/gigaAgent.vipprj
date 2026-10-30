@@ -53,6 +53,7 @@
     <item-map filename="$(ProDir)pfc\commandLineParser\commandLineParser.pack" />
     <item-map filename="$(ProDir)pfc\console\console.pack" />
     <item-map filename="$(ProDir)pfc\core.pack" />
+    <item-map filename="$(ProDir)pfc\cryptography\cryptography.pack" />
     <item-map filename="$(ProDir)pfc\event\event.pack" />
     <item-map filename="$(ProDir)pfc\event\eventSupport\eventSupport.pack" />
     <item-map filename="$(ProDir)pfc\exception\exception.pack" />
@@ -93,9 +94,13 @@
     <item-map filename="$(ProDir)pfc\stream\stream.pack" />
     <item-map filename="$(ProDir)pfc\string\string.pack" />
     <item-map filename="$(ProDir)pfc\string8\string8.pack" />
+    <item-map filename="$(ProDir)pfc\syntax\lexer\lexer_stringSupport\lexer_stringSupport.pack" />
     <item-map filename="$(ProDir)pfc\time\iso8601Parser\iso8601Parser.pack" />
     <item-map filename="$(ProDir)pfc\time\time.pack" />
     <item-map filename="$(ProDir)pfc\vpi\vpiDomains\vpiDomains.pack" />
+    <item-map filename="$(ProDir)pfc\web\json\json.pack" />
+    <item-map filename="$(ProDir)pfc\web\json\jsonSupport\jsonSupport.pack" />
+    <item-map filename="$(ProDir)pfc\windowsApi\bCrypt_api\bCrypt_api.pack" />
     <item-map filename="$(ProDir)pfc\windowsApi\com_api\basicInterfaces\basicInterfaces.pack" />
     <item-map filename="$(ProDir)pfc\windowsApi\com_api\com_api.pack" />
     <item-map filename="$(ProDir)pfc\windowsApi\com_api\comDomains\comDomains.pack" />
@@ -104,6 +109,7 @@
     <item-map filename="$(ProDir)pfc\windowsApi\com_api\standardInterfaces\IEnumXXXX\iEnumXXXX.pack" />
     <item-map filename="$(ProDir)pfc\windowsApi\com_api\standardInterfaces\standardInterfaces.pack" />
     <item-map filename="$(ProDir)pfc\windowsApi\console_api\console_api.pack" />
+    <item-map filename="$(ProDir)pfc\windowsApi\crypt_api\crypt_api.pack" />
     <item-map filename="$(ProDir)pfc\windowsApi\exe_api\exe_api.pack" />
     <item-map filename="$(ProDir)pfc\windowsApi\fileSystem_api\fileSystem_api.pack" />
     <item-map filename="$(ProDir)pfc\windowsApi\gui_api\gui_api.pack" />
@@ -113,6 +119,7 @@
     <item-map filename="$(ProDir)pfc\windowsApi\memory_api\memory_api.pack" />
     <item-map filename="$(ProDir)pfc\windowsApi\multiThread_api\multiThread_api.pack" />
     <item-map filename="$(ProDir)pfc\windowsApi\nativeWinApi\nativeWinApi.pack" />
+    <item-map filename="$(ProDir)pfc\windowsApi\ntStatus\ntStatus.pack" />
     <item-map filename="$(ProDir)pfc\windowsApi\registry_api\registry_api.pack" />
     <item-map filename="$(ProDir)pfc\windowsApi\runTime_api\runTime_api.pack" />
     <item-map filename="$(ProDir)pfc\windowsApi\Shell_api\Shell_api.pack" />
