@@ -1,0 +1,10 @@
+**/*.scope
+**/*.obj
+**/*.exe
+**/*.deb
+**/*.dll
+**/*.map
+**/obj*
+**/deb*
+**/exe*
+**/*.prjgrd
