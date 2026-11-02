@@ -1,0 +1,12 @@
+{
+	"gigaChat": {
+		"auth": {
+			"oauthUrl": "https://ngw.devices.sberbank.ru:9443/api/v2/oauth",
+			"clientID": "01a18d6c-c77a-7027-b50c-89a0c6209ace",
+			"clientSecret": "1564b61b-bbc8-4241-8bd5-8ff8a2bfe234",
+			"authorizationKey": "MDFhMThkNmMtYzc3YS03MDI3LWI1MGMtODlhMGM2MjA5YWNlOjE1NjRiNjFiLWJiYzgtNDI0MS04YmQ1LThmZjhhMmJmZTIzNA==",
+			"scope": "GIGACHAT_API_PERS"
+		},
+		"apiUrl": "https//api.giga.chat"
+	}
+}
