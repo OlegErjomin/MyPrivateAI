@@ -13,5 +13,6 @@ properties
 
 predicates
     init : (jsonValue Config).
+    auth : ().
 
 end interface gigaChatApi

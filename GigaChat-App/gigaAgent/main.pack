@@ -2,6 +2,8 @@
 #include @"main.ph"
 
 % privately used packages
+#include @"pfc\async\async.ph"
+#include @"gigaChatApi\gigaChatApi.ph"
 #include @"pfc\fileSystem\fileSystem.ph"
 #include @"pfc\web\json\json.ph"
 #include @"pfc\commandLineParser\commandLineParser.ph"

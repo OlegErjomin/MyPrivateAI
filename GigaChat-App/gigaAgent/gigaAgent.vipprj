@@ -10,8 +10,10 @@
     <item-map filename="$(ProDir)lib\vipRun.lib" />
     <item-map filename="$(ProDir)lib\win32.lib" />
     <item-map filename="$(ProDir)pfc\application\Exe\exe.pack" />
+    <item-map filename="$(ProDir)pfc\async\async.pack" />
     <item-map filename="$(ProDir)pfc\async\executionContext\executionContext.pack" />
     <item-map filename="$(ProDir)pfc\async\executionContext\executionContext_pool\executionContext_pool.pack" />
+    <item-map filename="$(ProDir)pfc\async\future\future.pack" />
     <item-map filename="$(ProDir)pfc\async\support\resumable\resumable.pack" />
     <item-map filename="$(ProDir)pfc\async\support\suspendingCore\suspendingCore.pack" />
     <item-map filename="$(ProDir)pfc\async\support\tp\tp.pack" />
@@ -22,6 +24,7 @@
     <item-map filename="$(ProDir)pfc\async\support\tp\tps\tpIoImpl\tpIoImpl.pack" />
     <item-map filename="$(ProDir)pfc\async\support\tp\tps\tps.pack" />
     <item-map filename="$(ProDir)pfc\async\support\tp\tps\waitCallback\waitCallback.pack" />
+    <item-map filename="$(ProDir)pfc\async\waitSet\waitSet.pack" />
     <item-map filename="$(ProDir)pfc\basis\cancelable\cancelable.pack" />
     <item-map filename="$(ProDir)pfc\basis\disposable\disposable.pack" />
     <item-map filename="$(ProDir)pfc\basis\disposable\disposeRetract\disposeRetract.pack" />
@@ -76,6 +79,7 @@
     <item-map filename="$(ProDir)pfc\multiThread\criticalRegion\criticalRegion.pack" />
     <item-map filename="$(ProDir)pfc\multiThread\criticalRegion\criticalRegionSupport\criticalRegionSupport.pack" />
     <item-map filename="$(ProDir)pfc\multiThread\criticalSection\criticalSection.pack" />
+    <item-map filename="$(ProDir)pfc\multiThread\event\event.pack" />
     <item-map filename="$(ProDir)pfc\multiThread\semaphore\semaphore.pack" />
     <item-map filename="$(ProDir)pfc\multiThread\srwLock\srwLock.pack" />
     <item-map filename="$(ProDir)pfc\multiThread\syncObject\syncObject.pack" />
@@ -95,11 +99,16 @@
     <item-map filename="$(ProDir)pfc\string\string.pack" />
     <item-map filename="$(ProDir)pfc\string8\string8.pack" />
     <item-map filename="$(ProDir)pfc\syntax\lexer\lexer_stringSupport\lexer_stringSupport.pack" />
+    <item-map filename="$(ProDir)pfc\syntax\scannerSupport\scannerSupport.pack" />
     <item-map filename="$(ProDir)pfc\time\iso8601Parser\iso8601Parser.pack" />
     <item-map filename="$(ProDir)pfc\time\time.pack" />
     <item-map filename="$(ProDir)pfc\vpi\vpiDomains\vpiDomains.pack" />
+    <item-map filename="$(ProDir)pfc\web\http\http.pack" />
+    <item-map filename="$(ProDir)pfc\web\http\httpHeaders\httpHeaders.pack" />
     <item-map filename="$(ProDir)pfc\web\json\json.pack" />
     <item-map filename="$(ProDir)pfc\web\json\jsonSupport\jsonSupport.pack" />
+    <item-map filename="$(ProDir)pfc\web\mime\mime.pack" />
+    <item-map filename="$(ProDir)pfc\web\webQueryString\webQueryString.pack" />
     <item-map filename="$(ProDir)pfc\windowsApi\bCrypt_api\bCrypt_api.pack" />
     <item-map filename="$(ProDir)pfc\windowsApi\com_api\basicInterfaces\basicInterfaces.pack" />
     <item-map filename="$(ProDir)pfc\windowsApi\com_api\com_api.pack" />
@@ -115,8 +124,12 @@
     <item-map filename="$(ProDir)pfc\windowsApi\gui_api\gui_api.pack" />
     <item-map filename="$(ProDir)pfc\windowsApi\guid_api\guid_api.pack" />
     <item-map filename="$(ProDir)pfc\windowsApi\hash_api\hash_api.pack" />
+    <item-map filename="$(ProDir)pfc\windowsApi\httpServer_api\httpServer_api.pack" />
     <item-map filename="$(ProDir)pfc\windowsApi\locale_api\locale_api.pack" />
     <item-map filename="$(ProDir)pfc\windowsApi\memory_api\memory_api.pack" />
+    <item-map filename="$(ProDir)pfc\windowsApi\msxml_api\msxml_HTTP_api\import\msxml_HTTP_api_import.pack" />
+    <item-map filename="$(ProDir)pfc\windowsApi\msxml_api\msxml_HTTP_api\msxml_HTTP_api.pack" />
+    <item-map filename="$(ProDir)pfc\windowsApi\msxml_api\msxml_HTTP_api\native\msxml_HTTP_api_native.pack" />
     <item-map filename="$(ProDir)pfc\windowsApi\multiThread_api\multiThread_api.pack" />
     <item-map filename="$(ProDir)pfc\windowsApi\nativeWinApi\nativeWinApi.pack" />
     <item-map filename="$(ProDir)pfc\windowsApi\ntStatus\ntStatus.pack" />
@@ -130,6 +143,9 @@
     <item-map filename="$(ProDir)pfc\windowsApi\time_api\time_api.pack" />
     <item-map filename="$(ProDir)pfc\windowsApi\windowsAPI.pack" />
     <item-map filename="$(ProDir)pfc\windowsApi\WinErrors\winErrors.pack" />
+    <item-map filename="$(ProDir)pfc\windowsApi\winHttp_api\winHttp_api.pack" />
+    <item-map filename="$(ProDir)pfc\windowsApi\winSock2_api\winSock2_api.pack" />
+    <item-map filename="gigaChatApi\gigaChatApi.pack" />
     <item-map filename="main.manifest" />
     <item-map filename="main.pack" />
     <item-map filename="main.version" />

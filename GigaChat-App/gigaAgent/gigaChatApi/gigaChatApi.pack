@@ -1,5 +1,13 @@
 ﻿#include @"gigaChatApi\gigaChatApi.ph"
 
 % privately used packages
+#include @"pfc\string8\string8.ph"
+#include @"pfc\windowsApi\winHttp_api\winHttp_api.ph"
+#include @"pfc\console\console.ph"
+#include @"pfc\string\string.ph"
+#include @"pfc\guid\guid.ph"
+#include @"pfc\windowsApi\msxml_api\msxml_HTTP_api\msxml_HTTP_api.ph"
+#include @"pfc\time\time.ph"
+#include @"pfc\web\http\http.ph"
 % implementations
 #include @"gigaChatApi\gigaChatApi.pro"
