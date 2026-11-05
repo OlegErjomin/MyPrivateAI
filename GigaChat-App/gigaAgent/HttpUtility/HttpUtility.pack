@@ -1,0 +1,15 @@
+﻿% own pack
+#include @"HttpUtility\HttpUtility.ph"
+
+% privately used packages
+#include @"pfc\syntax\scannerSupport\scannerSupport.ph"
+#include @"pfc\stream\stream.ph"
+#include @"pfc\string\string.ph"
+
+% private interfaces
+
+% private classes
+
+% implementations
+#include @"HttpUtility\HttpUtility.pro"
+

@@ -7,12 +7,14 @@ properties
     oauthUrl : string.
     apiUrl : string.
     scope : string.
+    model : string.
     authorizationKey : optional{string}.
     clientId : optional{string}.
     clientSecret : optional{string}.
 
 predicates
     init : (jsonValue Config).
-    auth : ().
+    auth : () -> string AccessToken.
+    apiCall : (jsonValue Request).
 
 end interface gigaChatApi

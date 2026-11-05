@@ -146,6 +146,7 @@
     <item-map filename="$(ProDir)pfc\windowsApi\winHttp_api\winHttp_api.pack" />
     <item-map filename="$(ProDir)pfc\windowsApi\winSock2_api\winSock2_api.pack" />
     <item-map filename="gigaChatApi\gigaChatApi.pack" />
+    <item-map filename="HttpUtility\HttpUtility.pack" />
     <item-map filename="main.manifest" />
     <item-map filename="main.pack" />
     <item-map filename="main.version" />

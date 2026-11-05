@@ -7,6 +7,8 @@
 			"authorizationKey": "MDFhMThkNmMtYzc3YS03MDI3LWI1MGMtODlhMGM2MjA5YWNlOjE1NjRiNjFiLWJiYzgtNDI0MS04YmQ1LThmZjhhMmJmZTIzNA==",
 			"scope": "GIGACHAT_API_PERS"
 		},
-		"apiUrl": "https//api.giga.chat"
+		"apiUrl": "https://api.giga.chat/v1/chat/completions",
+		"model": "GigaChat-3-Ultra"
 	}
 }
+

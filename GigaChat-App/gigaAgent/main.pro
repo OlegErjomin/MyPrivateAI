@@ -21,7 +21,7 @@ clauses
             Config = getConfig(),
             GigaChat = gigaChatApi::new(),
             GigaChat:init(Config),
-            GigaChat:auth()
+            _Token = GigaChat:auth()
             %submitWait({  :- GigaChat:auth() })
         end if.
 
