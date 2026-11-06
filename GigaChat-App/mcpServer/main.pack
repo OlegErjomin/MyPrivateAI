@@ -1,0 +1,15 @@
+﻿% own pack
+#include @"main.ph"
+
+% privately used packages
+#include @"pfc\async\async.ph"
+#include @"pfc\string8\string8.ph"
+#include @"pfc\commandLineParser\commandLineParser.ph"
+#include @"pfc\programControl\programControl.ph"
+#include @"pfc\console\console.ph"
+#include @"pfc\core.ph"
+#include @"pfc\stream\stream.ph"
+
+% implementations
+#include @"mcpSession.pro"
+#include @"main.pro"
