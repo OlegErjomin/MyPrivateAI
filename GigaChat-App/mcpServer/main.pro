@@ -17,7 +17,6 @@ clauses
             stdio::errorStream:write(ErrorMessage),
             programControl::setApplicationExitCode(2)
         else
-            console::write("Stdio MCP server\n"),
             % place your own code here
             initApi(),
             runStdio()
@@ -30,10 +29,11 @@ clauses
         session := mcpSession::new(),
         Api = jsonRpcApiMap{mcpSession}::new(),
         Api:setProc_name("initialize", onInitialize),
+%        Api:setProc_name("server/discover", onServerDiscover),
 %         Api:setProc_name("tools/list", onToolsList),
 %         Api:setProc_name("tools/call", onToolsCall),
 %         Api:setProc_name("ping", onPing),
-%         Api:setListener_name("notifications/initialized", onInitialized),
+        Api:setListener_name("notifications/initialized", onInitialized),
 %         Api:setListener_name("notifications/cancelled", onCancelled),
         api := Api.
 % Framing: MCP stdio uses newline-delimited JSON, one message per line, UTF-8.
@@ -44,9 +44,9 @@ class predicates
     runStdio : ().
 clauses
     runStdio() :-
-        Stream = stdio::inputStream,
-        Stream:setMode(stream::utf8_mode), % once, not per line
-        loop(Stream).
+        stdio::inputStream:setMode(stream::utf8_mode),
+        stdio::outputStream:setMode(stream::utf8_mode),
+        loop(stdio::inputStream).
 
 class predicates
     loop : (inputStream Stream).
@@ -68,25 +68,62 @@ clauses
     processLine(Line) :-
         try
             Value = json::fromString(Line), % placeholder: parse
+            %if Value = json::o(Json) then
+            %Id = Json:get("id"),
+            addMissingParams(Value),
             Future = submit({  = api:callApi_async(session, Value) }),
             Result = Future:getResult(),
-            if async\futureDomains::success_(RetVal) = Result then
-                console::write("\nA: ", RetVal)
+            if async\futureDomains::success_(Response) = Result then
+                if n <> Response then
+                    Output = stdio::outputStream,
+                    %Output:setMode(stream::utf8_mode),
+                    Output:write(json::asString(Response), "\n"),
+                    Output:flush()
+                end if
             else
-                session:log("Result is unknown")
+                session:log("Call did not complete")
             end if
-        catch _ do
-            session:log("Parse error")
+            %end if
+        catch TraceId do
+            session:log(string::format("Error processing line: %", exceptionDump::dumpToString(TraceId)))
         end try.
+
+class predicates
+    addMissingParams : (jsonValue Request).
+clauses
+    addMissingParams(o(Obj)) :-
+        none = Obj:get_optional("params"),
+        !,
+        Obj:set_object("params", jsonObject::new()).
+    addMissingParams(_).
 
 class predicates
     onInitialize : mcpSession::mcpMethod.
 clauses
-    onInitialize(Session, ArgumentMap) = Result :-
+    onInitialize(Session, _Args) = o(Result) :-
         Session:initialized := true,
-        console::write(json::asString(o(ArgumentMap))),
-        Result = json::n().
+        Result = jsonObject::new(),
+        Result:set_string("protocolVersion", "2024-11-05"),
+        Caps = jsonObject::new(),
+        Caps:set_object("tools", jsonObject::new()),
+        Result:set_object("capabilities", Caps),
+        Info = jsonObject::new(),
+        Info:set_string("name", "mcpServer"),
+        Info:set_string("version", "0.1"),
+        Result:set_object("serverInfo", Info).
 
+class predicates
+    onInitialized : (mcpSession Session, jsonObject Args).
+clauses
+    onInitialized(_Session, _Args) :-
+        session:log("client initialized").
+
+% class predicates
+%     onServerDiscover : mcpSession::mcpMethod.
+% clauses
+%     onServerDiscover(Session, ArgumentMap) = Result :-
+%         console::write(json::asString(o(ArgumentMap))),
+%         Result = json::n().
 end implement main
 
 goal

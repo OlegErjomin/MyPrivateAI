@@ -2,6 +2,8 @@
 #include @"main.ph"
 
 % privately used packages
+#include @"pfc\exception\exceptionDump\exceptionDump.ph"
+#include @"pfc\string\string.ph"
 #include @"pfc\async\async.ph"
 #include @"pfc\string8\string8.ph"
 #include @"pfc\commandLineParser\commandLineParser.ph"

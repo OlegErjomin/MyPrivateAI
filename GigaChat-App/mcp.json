@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "filesystem": {
+      "command": "c:\\GITHUB\\MyPrivateAI\\GigaChat-App\\mcpServer\\exe64\\mcpServer.exe",
+      "args": [
+	]
+    }
+  }
+}
