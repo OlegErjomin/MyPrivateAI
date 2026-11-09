@@ -29,7 +29,7 @@ clauses
         session := mcpSession::new(),
         Api = jsonRpcApiMap{mcpSession}::new(),
         Api:setProc_name("initialize", onInitialize),
-%        Api:setProc_name("server/discover", onServerDiscover),
+        Api:setProc_name("server/discover", onServerDiscover),
 %         Api:setProc_name("tools/list", onToolsList),
 %         Api:setProc_name("tools/call", onToolsCall),
 %         Api:setProc_name("ping", onPing),
@@ -118,12 +118,24 @@ clauses
     onInitialized(_Session, _Args) :-
         session:log("client initialized").
 
-% class predicates
-%     onServerDiscover : mcpSession::mcpMethod.
-% clauses
-%     onServerDiscover(Session, ArgumentMap) = Result :-
-%         console::write(json::asString(o(ArgumentMap))),
-%         Result = json::n().
+class predicates
+    onServerDiscover : mcpSession::mcpMethod.
+clauses
+    onServerDiscover(_Session, _ArgumentMap) = o(Result) :-
+        Result = jsonObject::new(),
+        Result:set_string("resultType", "complete"),
+        Result:set_array("supportedVersions", [s("2026-07-28")]),
+        Caps = jsonObject::new(),
+        Caps:set_object("tools", jsonObject::new()),
+        Result:set_object("capabilities", Caps),
+        Meta = jsonObject::new(),
+        Info = jsonObject::new(),
+        Info:set_string("name", "mcpServer"),
+        Info:set_string("version", "0.1"),
+        Meta:set_object("io.modelcontextprotocol/serverInfo", Info),
+        Result:set_object("_meta", Meta),
+        Result:set_string("instructions", "This is sample BestProlog MCP server").
+
 end implement main
 
 goal
