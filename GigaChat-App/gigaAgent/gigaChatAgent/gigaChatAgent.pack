@@ -1,0 +1,12 @@
+﻿#include @"gigaChatAgent\gigaChatAgent.ph"
+
+% privately used packages
+#include @"pfc\list\list.ph"
+#include @"pfc\string\string.ph"
+#include @"pfc\exception\exceptionDump\exceptionDump.ph"
+#include @"pfc\web\json\json.ph"
+
+#include @"gigaChatApi\gigaChatApi.ph"
+
+% implementations
+#include @"gigaChatAgent\gigaChatAgent.pro"

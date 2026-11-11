@@ -106,6 +106,8 @@
     <item-map filename="$(ProDir)pfc\web\http\http.pack" />
     <item-map filename="$(ProDir)pfc\web\http\httpHeaders\httpHeaders.pack" />
     <item-map filename="$(ProDir)pfc\web\json\json.pack" />
+    <item-map filename="$(ProDir)pfc\web\json\jsonRpc\jsonRpc.pack" />
+    <item-map filename="$(ProDir)pfc\web\json\jsonRpc\jsonRpcSupport\jsonRpcSupport.pack" />
     <item-map filename="$(ProDir)pfc\web\json\jsonSupport\jsonSupport.pack" />
     <item-map filename="$(ProDir)pfc\web\mime\mime.pack" />
     <item-map filename="$(ProDir)pfc\web\webQueryString\webQueryString.pack" />
@@ -145,11 +147,13 @@
     <item-map filename="$(ProDir)pfc\windowsApi\WinErrors\winErrors.pack" />
     <item-map filename="$(ProDir)pfc\windowsApi\winHttp_api\winHttp_api.pack" />
     <item-map filename="$(ProDir)pfc\windowsApi\winSock2_api\winSock2_api.pack" />
+    <item-map filename="gigaChatAgent\gigaChatAgent.pack" />
     <item-map filename="gigaChatApi\gigaChatApi.pack" />
     <item-map filename="HttpUtility\HttpUtility.pack" />
     <item-map filename="main.manifest" />
     <item-map filename="main.pack" />
     <item-map filename="main.version" />
+    <item-map filename="mcpClient\mcpClient.pack" />
     <item-map filename="ProjectIcon.ico" resource_id="application_icon" />
   </item-set>
   <setting-set key="target">

@@ -11,6 +11,7 @@ facts
     authorizationKey : optional{string} := none.
     clientId : optional{string} := none.
     clientSecret : optional{string} := none.
+    mcpServer : optional{string} := none.
 
 facts
     ngwHost : string := "ngw.devices.sberbank.ru".
@@ -40,7 +41,8 @@ clauses
             model := GigaChat:get_string("model"),
             authorizationKey := Auth:get_string_optional("authorizationKey"),
             clientId := Auth:get_string_optional("clientID"),
-            clientSecret := Auth:get_string_optional("clientSecret")
+            clientSecret := Auth:get_string_optional("clientSecret"),
+            mcpServer := GigaChat:get_string_optional("mcpServer")
         else
             exception::raise_definiteUser("Missing GigaChat configuration")
         end if.
@@ -184,8 +186,28 @@ clauses
     toUnixTime(Time) = (Time:getTime() - 116444736000000000) div 10000.
 
 clauses
-    apiCall(Request) :-
-        Token = tryGetAccessToken(),
-        _Resp = postApi(Token, Request).
+    chat(Request) = postApi(tryGetAccessToken(), Request).
+
+clauses
+    mcpHandShake() :-
+        if some(MCPServerCommand) = mcpServer then
+            Transport = mcpProcessTransport::new(MCPServerCommand),
+            Mcp = mcpClient::new(Transport),
+            Mcp:initialize(),
+            console::write("handshake ok\n"),
+            Mcp:close()
+        else
+            console::write("No MCP Server configuger\n")
+        end if.
+
+clauses
+    mcpGetClient() = MCP :-
+        if some(MCPServerCommand) = mcpServer then
+            Transport = mcpProcessTransport::new(MCPServerCommand),
+            Mcp = mcpClient::new(Transport),
+            Mcp:initialize()
+        else
+            exception::raise_error("MCP Server is not configured")
+        end if.
 
 end implement gigaChatApi

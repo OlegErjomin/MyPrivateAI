@@ -30,11 +30,7 @@ clauses
         Api = jsonRpcApiMap{mcpSession}::new(),
         Api:setProc_name("initialize", onInitialize),
         Api:setProc_name("server/discover", onServerDiscover),
-%         Api:setProc_name("tools/list", onToolsList),
-%         Api:setProc_name("tools/call", onToolsCall),
-%         Api:setProc_name("ping", onPing),
-        Api:setListener_name("notifications/initialized", onInitialized),
-%         Api:setListener_name("notifications/cancelled", onCancelled),
+        mcpTools::register(Api),
         api := Api.
 % Framing: MCP stdio uses newline-delimited JSON, one message per line, UTF-8.
 % It does not use Content-Length headers like LSP does.

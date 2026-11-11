@@ -10,3 +10,4 @@
 % exported classes
 #include @"mcpSession.cl"
 #include @"main.cl"
+#include @"mcpTools.cl"

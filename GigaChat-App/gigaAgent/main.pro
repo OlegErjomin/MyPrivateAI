@@ -21,7 +21,13 @@ clauses
             Config = getConfig(),
             GigaChat = gigaChatApi::new(),
             GigaChat:init(Config),
-            _Token = GigaChat:auth()
+            _Token = GigaChat:auth(),
+            GigaChat:mcpHandShake()
+% Mcp:initialize(),
+% Agent = gigaChatAgent::new(Giga, Mcp, "Ты помощник. Используй инструменты, когда это нужно."),
+% Answer = Agent:run("Какое сейчас время? И повтори слово 'привет' с помощью echo."),
+% console::write(Answer, "\n"),
+% Mcp:close().
             %submitWait({  :- GigaChat:auth() })
         end if.
 

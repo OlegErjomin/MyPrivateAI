@@ -15,6 +15,8 @@ properties
 predicates
     init : (jsonValue Config).
     auth : () -> string AccessToken.
-    apiCall : (jsonValue Request).
+    chat : (jsonValue Request) -> jsonValue Response.
+    mcpHandShake : ().
+    mcpGetClient : () -> mcpClient.
 
 end interface gigaChatApi

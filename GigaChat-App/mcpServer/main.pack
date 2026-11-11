@@ -11,7 +11,9 @@
 #include @"pfc\console\console.ph"
 #include @"pfc\core.ph"
 #include @"pfc\stream\stream.ph"
+#include @"pfc\time\time.ph"
 
 % implementations
 #include @"mcpSession.pro"
 #include @"main.pro"
+#include @"mcpTools.pro"
