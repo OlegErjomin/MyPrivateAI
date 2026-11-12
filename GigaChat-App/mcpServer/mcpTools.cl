@@ -1,7 +1,7 @@
-% Copyright (c) 2026 BestProlog
+﻿% Copyright (c) 2026 BestProlog
 
 class mcpTools
-    open core, json
+    open core
 
 predicates
     register : (jsonRpcApiMap{mcpSession} Api).

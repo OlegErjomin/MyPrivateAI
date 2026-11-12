@@ -108,12 +108,11 @@ clauses
         Info:set_string("version", "0.1"),
         Result:set_object("serverInfo", Info).
 
-class predicates
-    onInitialized : (mcpSession Session, jsonObject Args).
-clauses
-    onInitialized(_Session, _Args) :-
-        session:log("client initialized").
-
+% class predicates
+%     onInitialized : (mcpSession Session, jsonObject Args).
+% clauses
+%     onInitialized(_Session, _Args) :-
+%         session:log("client initialized").
 class predicates
     onServerDiscover : mcpSession::mcpMethod.
 clauses

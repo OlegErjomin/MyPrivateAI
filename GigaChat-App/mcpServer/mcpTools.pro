@@ -92,7 +92,7 @@ clauses
         Now = time::now(),
         !.
 
-    callTool(_Session, Name, _Args) = Result :-
+    callTool(_Session, Name, _Args) = _Result :-
         % protocol-level failure: becomes a JSON-RPC error response
         jsonRpcApiMap{mcpSession}::raise_callError(jsonRpcError::invalidParams, string::format("Unknown tool: %", Name)).
 
