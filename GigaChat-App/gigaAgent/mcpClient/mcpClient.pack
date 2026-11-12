@@ -5,6 +5,8 @@
 #include @"pfc\string\string.ph"
 #include @"pfc\string8\string8.ph"
 #include @"pfc\web\json\json.ph"
+#include @"pfc\list\list.ph"
+
 % implementations
 #include @"mcpClient\mcpClient.pro"
 #include @"mcpClient\mcpProcessTransport.pro"

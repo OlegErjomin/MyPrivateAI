@@ -8,10 +8,6 @@ facts
     childStdout : handle := nullHandle. % we read here
     hProcess : processHandle := erroneous.
     hThread : threadHandle := erroneous.
-    pending : string8 := "". % raw bytes read but not yet returned as lines
-
-constants
-    chunkSize = 4096.
 
 clauses
     new(CommandLine) :-
@@ -77,37 +73,47 @@ clauses
 
 clauses
     readLine() = Line :-
-        if tryExtractLine(Line1) then
-            Line = Line1
+        Pieces = list::reverse(readUntilNewline([])),
+        % decode once, when the whole line is present, so multibyte characters are never split
+        Line = string::trim(string8::fromUtf8(joinAll(Pieces))).
+
+predicates
+    readUntilNewline : (string8* ReverseAcc) -> string8* ReverseAcc.
+clauses
+    readUntilNewline(Acc) = Result :-
+        Piece = readByte(),
+        if "\n" = Piece then
+            Result = Acc
         else
-            fillBuffer(),
-            Line = readLine()
+            Result = readUntilNewline([Piece | Acc])
         end if.
 
 predicates
-    tryExtractLine : (string Line [out]) determ.
+    readByte : () -> string8 Piece.
 clauses
-    tryExtractLine(Line) :-
-        Pending = string8::fromUtf8(pending),
-        Pos = string::search(Pending, "\n"),
-        !,
-        string::front(Pending, Pos, Front, RestWithNl),
-        string::front(RestWithNl, 1, _, Rest),
-        pending := string8::toUtf8(Rest),
-        % decode only complete lines, so multibyte UTF-8 characters are never split
-        Line = string::trim(Front).
-
-predicates
-    fillBuffer : ().
-clauses
-    fillBuffer() :-
-        Buf = string8::create(chunkSize),
-        Ok = mcpPipe_native::readFile(childStdout, uncheckedConvert(pointer, Buf), chunkSize, Read),
-        if b_true = Ok and Read > 0 then
-            pending := string8::concat(pending, string8::createBufferCopy(Buf, uncheckedConvert(byteCount, Read)))
+    readByte() = Piece :-
+        Buf = string8::create(1),
+        Ok = mcpPipe_native::readFile(childStdout, uncheckedConvert(pointer, Buf), 1, Read),
+        if b_true = Ok and Read = 1 then
+            Piece = string8::createBufferCopy(Buf, 1)
         else
             exception::raise_definiteUser("The MCP server closed its output")
         end if.
+
+% Pairwise merge: O(n log n) instead of O(n^2) for repeated concatenation.
+class predicates
+    joinAll : (string8* Parts) -> string8 Result.
+clauses
+    joinAll([]) = "".
+    joinAll([P]) = P.
+    joinAll([A, B | Rest]) = joinAll(pairUp([A, B | Rest])).
+
+class predicates
+    pairUp : (string8* Parts) -> string8* Merged.
+clauses
+    pairUp([A, B | Rest]) = [string8::concat(A, B) | pairUp(Rest)] :-
+        !.
+    pairUp(Parts) = Parts.
 
 clauses
     close() :-

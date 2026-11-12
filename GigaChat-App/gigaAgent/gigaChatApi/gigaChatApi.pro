@@ -1,7 +1,7 @@
 ﻿% Copyright (c) 2026 BestProlog
 
 implement gigaChatApi
-    open core, json, http
+    open core, json
 
 facts
     oauthUrl : string := erroneous.
@@ -108,6 +108,8 @@ clauses
 
     postApi(Token, JsonRequest) = JsonResponse :-
         Session = winHttp_api::winHttpOpen("GigaChatApi"),
+        _ = winHttp_native::winHttpSetTimeouts(Session, 10000, 10000, 30000, 120000),
+        %                                         resolve connect send  receive
         try
             Connection = winHttp_api::winHttpConnect(Session, apiHost),
             try

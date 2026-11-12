@@ -1,7 +1,7 @@
 ﻿% Copyright (c) 2026 BestProlog
 
 implement main
-    open core, json, async\async
+    open core, json
 
 class facts
     config : string := "config.json".
@@ -18,6 +18,7 @@ clauses
             programControl::setApplicationExitCode(2)
         else
             % place your own code here
+            console::initUtf8(),
             Config = getConfig(),
             GigaChat = gigaChatApi::new(),
             GigaChat:init(Config),
@@ -27,12 +28,6 @@ clauses
             Agent = gigaChatAgent::new(GigaChat, Mcp, "Ты помощник. Используй инструменты, когда это нужно."),
             conversationLoop(Agent),
             MCP:close()
-% Mcp:initialize(),
-%
-% Answer = Agent:run("Какое сейчас время? И повтори слово 'привет' с помощью echo."),
-% console::write(Answer, "\n"),
-% Mcp:close().
-            %submitWait({  :- GigaChat:auth() })
         end if.
 
 class predicates
@@ -51,7 +46,7 @@ class predicates
     conversationLoop : (gigaChatAgent Agent).
 clauses
     conversationLoop(Agent) :-
-        console::write(">>"),
+        console::write(">> "),
         Question = console::readLine(),
         string::toLowerCase(Question) <> "quit",
         !,
