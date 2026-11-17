@@ -20,4 +20,20 @@ properties
     % @short Upper bound on model round trips per `run` (protects against tool-call loops). Default 8.
     % @end
 
+/******************************************************************
+    Streaming support
+******************************************************************/
+domains
+    tokenCallback = (string Token).
+
+properties
+    streaming : boolean.
+    % @short true: use stream mode and report text through `tokenHandler` as it arrives. Default false.
+    % @end
+
+properties
+    tokenHandler : tokenCallback.
+    % @short Called with each fragment of the answer text in streaming mode. Default prints to the console.
+    % @end
+
 end interface gigaChatAgent

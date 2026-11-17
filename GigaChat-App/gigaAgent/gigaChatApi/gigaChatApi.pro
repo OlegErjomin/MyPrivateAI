@@ -12,6 +12,7 @@ facts
     clientId : optional{string} := none.
     clientSecret : optional{string} := none.
     mcpServer : optional{string} := none.
+    stream : optional{boolean} := some(false).
 
 facts
     ngwHost : string := "ngw.devices.sberbank.ru".
@@ -39,6 +40,7 @@ clauses
             apiPath := ApiPath,
             scope := Auth:get_string("scope"),
             model := GigaChat:get_string("model"),
+            stream := GigaChat:get_boolean_optional("stream"),
             authorizationKey := Auth:get_string_optional("authorizationKey"),
             clientId := Auth:get_string_optional("clientID"),
             clientSecret := Auth:get_string_optional("clientSecret"),
@@ -190,6 +192,114 @@ clauses
 clauses
     chat(Request) = postApi(tryGetAccessToken(), Request).
 
+/**************************************************************************************
+   Streamed chat
+**************************************************************************************/
+facts
+    sawEvent : boolean := false.
+    otherText : string := "".
+
+clauses
+    chatStream(JsonRequest, OnChunk) :-
+        if o(Obj) = JsonRequest then
+            Obj:set_boolean("stream", true)
+        end if,
+        sawEvent := false,
+        otherText := "",
+        Token = tryGetAccessToken(),
+        Session = winHttp_api::winHttpOpen("GigaChatApi"),
+        try
+            Connection = winHttp_api::winHttpConnect(Session, apiHost),
+            try
+                Request =
+                    winHttp_api::winHttpOpenRequest(Connection, "POST", apiPath, nullString, winHttp_native::winhttp_no_referer,
+                        winHttp_native::winhttp_default_accept_types, winHttp_native::winhttp_flag_secure),
+                try
+                    % ... the same winHttpSetOption(client_cert_context) block as in postApi ...
+                    Headers = string::format("Content-Type: application/json\r\nAccept: text/event-stream\r\nAuthorization: Bearer %\r\n", Token),
+                    winHttp_api::winHttpAddRequestHeaders(Request, Headers),
+                    Body = json::asUtf8(JsonRequest),
+                    Len = string8::length(Body),
+                    winHttp_api::winHttpSendRequest(Request, "", uncheckedConvert(pointer, Body), Len, Len),
+                    winHttp_api::winHttpReceiveResponse(Request),
+                    pumpEvents(Request, OnChunk)
+                finally
+                    winHttp_api::winHttpCloseHandle(Request)
+                end try
+            finally
+                winHttp_api::winHttpCloseHandle(Connection)
+            end try
+        finally
+            winHttp_api::winHttpCloseHandle(Session)
+        end try,
+        if false = sawEvent then
+            % an error reply (401, 422, ...) is a plain JSON body, not SSE
+            exception::raise_definiteUser(string::format("GigaChat streaming request failed: %", otherText))
+        end if.
+
+predicates
+    pumpEvents : (winHttp_native::hinternet Request, chunkHandler OnChunk).
+clauses
+    pumpEvents(Request, OnChunk) :-
+        Pieces = readUntilNewline(Request, [], AtEof),
+        Line = string::trim(string8::fromUtf8(utils::joinAll(list::reverse(Pieces)))),
+        Done = handleLine(Line, OnChunk),
+        if false = AtEof and false = Done then
+            pumpEvents(Request, OnChunk)
+        end if.
+
+predicates
+    handleLine : (string Line, chunkHandler OnChunk) -> boolean Done.
+clauses
+    handleLine(Line, OnChunk) = Done :-
+        if string::length(Line) >= 5 and string::front(Line, 5, Front, Rest) and Front = "data:" then
+            Data = string::trim(Rest),
+            if "[DONE]" = Data then
+                Done = true,
+                console::write("\nDONE\n")
+            else
+                sawEvent := true,
+                if o(Chunk) = json::fromString(Data) then
+                    OnChunk(Chunk)
+                end if,
+                Done = false
+            end if
+        else
+            if "" <> Line then
+                otherText := string::concat(otherText, Line)
+            end if,
+            Done = false
+        end if.
+
+predicates
+    readUntilNewline : (winHttp_native::hinternet Request, string8* ReverseAcc, boolean AtEof [out]) -> string8* ReverseAcc.
+clauses
+    readUntilNewline(Request, Acc, AtEof) = Result :-
+        Piece = readByte(Request),
+        if "" = Piece then
+            AtEof = true,
+            Result = Acc
+        elseif "\n" = Piece then
+            AtEof = false,
+            Result = Acc
+        else
+            Result = readUntilNewline(Request, [Piece | Acc], AtEof)
+        end if.
+
+predicates
+    readByte : (winHttp_native::hinternet Request) -> string8 Piece.
+clauses
+    readByte(Request) = Piece :-
+        Buf = string8::create(1),
+        Read = winHttp_api::winHttpReadData(Request, uncheckedConvert(pointer, Buf), 1),
+        if 1 = Read then
+            Piece = string8::createBufferCopy(Buf, 1)
+        else
+            Piece =
+                "" % end of the body
+        end if.
+
+% joinAll / pairUp: the same two predicates you already have in mcpProcessTransport
 clauses
     mcpHandShake() :-
         if some(MCPServerCommand) = mcpServer then

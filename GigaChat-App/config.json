@@ -9,6 +9,7 @@
 		},
 		"apiUrl": "https://api.giga.chat/v1/chat/completions",
 		"model": "GigaChat-3-Ultra",
+		"stream": true,
 		"mcpServer": "c:\\GITHUB\\MyPrivateAI\\GigaChat-App\\mcpServer\\exe64\\mcpServer.exe"
 	}
 }

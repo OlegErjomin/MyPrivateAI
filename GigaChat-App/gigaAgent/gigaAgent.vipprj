@@ -155,6 +155,7 @@
     <item-map filename="main.version" />
     <item-map filename="mcpClient\mcpClient.pack" />
     <item-map filename="ProjectIcon.ico" resource_id="application_icon" />
+    <item-map filename="utils\utils.pack" />
   </item-set>
   <setting-set key="target">
     <setting-map target="Win32">

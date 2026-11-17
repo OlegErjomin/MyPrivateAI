@@ -14,6 +14,9 @@ clauses
     new(Giga, Mcp, SystemPrompt) :-
         giga := Giga,
         mcp := Mcp,
+        if some(true) = giga:stream then
+            streaming := true
+        end if,
         systemPrompt := SystemPrompt.
 
 clauses
@@ -40,14 +43,13 @@ clauses
         Req = jsonObject::new(),
         Req:set_string("model", giga:model),
         Req:set("messages", a(Messages)),
+        Req:set_boolean("stream", streaming),
         if [] <> Functions then
             Req:set("functions", a(Functions)),
             Req:set_string("function_call", "auto")
         end if,
-        o(Resp) = giga:chat(o(Req)),
-        a([o(Choice) | _]) = Resp:get("choices"),
+        Msg = complete(Req),
         !,
-        Msg = Choice:get_object("message"),
         if some(FC) = Msg:get_object_optional("function_call") then
             Name = FC:get_string("name"),
             Args = argumentsOf(FC),
@@ -129,6 +131,104 @@ clauses
         "" = systemPrompt,
         !.
     systemMessages() = [message("system", systemPrompt)].
+
+/******************************************************************************************
+    Streaming support
+******************************************************************************************/
+facts
+    streaming : boolean := false.
+    tokenHandler : tokenCallback := writeToken.
+
+facts
+    accContent : string := "".
+    accFcName : string := "".
+    accArgsObj : optional{jsonObject} := none.
+    accArgsText : string := "".
+    accStateId : optional{string} := none.
+    hasFc : boolean := false.
+
+class predicates
+    writeToken : tokenCallback.
+clauses
+    writeToken(Token) :-
+        console::write(Token).
+
+predicates
+    complete : (jsonObject Req) -> jsonObject Msg determ.
+clauses
+    complete(Req) = Msg :-
+        if true = streaming then
+            accContent := "",
+            accFcName := "",
+            accArgsObj := none,
+            accArgsText := "",
+            accStateId := none,
+            hasFc := false,
+            giga:chatStream(o(Req), onChunk),
+            Msg = accumulatedMessage()
+        else
+            o(Resp) = giga:chat(o(Req)),
+            a([o(Choice) | _]) = Resp:get("choices"),
+            Msg = Choice:get_object("message")
+        end if.
+
+predicates
+    onChunk : (jsonObject Chunk).
+clauses
+    onChunk(Chunk) :-
+        some(a([o(Choice) | _])) = Chunk:get_optional("choices"),
+        some(Delta) = Choice:get_object_optional("delta"),
+        !,
+        if some(Text) = Delta:get_string_optional("content") and "" <> Text then
+            accContent := string::concat(accContent, Text),
+            tokenHandler(Text)
+        end if,
+        if some(FC) = Delta:get_object_optional("function_call") then
+            hasFc := true,
+            if some(N) = FC:get_string_optional("name") and "" <> N then
+                accFcName := N
+            end if,
+            % arguments: either a complete object or JSON text arriving in pieces
+            Args = FC:get_optional("arguments"),
+            if some(o(O)) = Args then
+                accArgsObj := some(O)
+            elseif some(s(T)) = Args then
+                accArgsText := string::concat(accArgsText, T)
+            end if
+        end if,
+        if some(Id) = Delta:get_string_optional("functions_state_id") then
+            accStateId := some(Id)
+        end if.
+    onChunk(_Chunk). % usage-only or unknown chunk
+
+predicates
+    accumulatedMessage : () -> jsonObject Msg.
+clauses
+    accumulatedMessage() = Msg :-
+        Msg = jsonObject::new(),
+        Msg:set_string("role", "assistant"),
+        Msg:set_string("content", accContent),
+        if true = hasFc then
+            FC = jsonObject::new(),
+            FC:set_string("name", accFcName),
+            FC:set_object("arguments", streamedArgs()),
+            Msg:set_object("function_call", FC)
+        end if,
+        if some(Id) = accStateId then
+            Msg:set_string("functions_state_id", Id)
+        end if.
+
+predicates
+    streamedArgs : () -> jsonObject Args.
+clauses
+    streamedArgs() = Obj :-
+        some(Obj) = accArgsObj,
+        !.
+    streamedArgs() = Obj :-
+        "" <> accArgsText,
+        o(Obj) = json::fromString(accArgsText),
+        !.
+    streamedArgs() = jsonObject::new().
 
 class predicates
     log : (string Text).

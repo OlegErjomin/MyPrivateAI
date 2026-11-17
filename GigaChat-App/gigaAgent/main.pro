@@ -51,7 +51,9 @@ clauses
         string::toLowerCase(Question) <> "quit",
         !,
         Answer = Agent:run(Question),
-        console::write(Answer, "\n"),
+        if false = Agent:streaming then
+            console::write(Answer, "\n")
+        end if,
         conversationLoop(Agent).
     conversationLoop(_Agent).
 

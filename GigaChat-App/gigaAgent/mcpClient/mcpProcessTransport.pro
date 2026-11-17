@@ -75,7 +75,7 @@ clauses
     readLine() = Line :-
         Pieces = list::reverse(readUntilNewline([])),
         % decode once, when the whole line is present, so multibyte characters are never split
-        Line = string::trim(string8::fromUtf8(joinAll(Pieces))).
+        Line = string::trim(string8::fromUtf8(utils::joinAll(Pieces))).
 
 predicates
     readUntilNewline : (string8* ReverseAcc) -> string8* ReverseAcc.
@@ -99,21 +99,6 @@ clauses
         else
             exception::raise_definiteUser("The MCP server closed its output")
         end if.
-
-% Pairwise merge: O(n log n) instead of O(n^2) for repeated concatenation.
-class predicates
-    joinAll : (string8* Parts) -> string8 Result.
-clauses
-    joinAll([]) = "".
-    joinAll([P]) = P.
-    joinAll([A, B | Rest]) = joinAll(pairUp([A, B | Rest])).
-
-class predicates
-    pairUp : (string8* Parts) -> string8* Merged.
-clauses
-    pairUp([A, B | Rest]) = [string8::concat(A, B) | pairUp(Rest)] :-
-        !.
-    pairUp(Parts) = Parts.
 
 clauses
     close() :-
