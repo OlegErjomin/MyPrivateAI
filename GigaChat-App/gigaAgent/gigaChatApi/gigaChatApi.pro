@@ -73,6 +73,8 @@ predicates
 clauses
     postOAuth(AuthKey, Rquid, Scope) = Response :-
         Session = winHttp_api::winHttpOpen("VisualProlog"),
+        _ = winHttp_native::winHttpSetTimeouts(Session, 10000, 10000, 30000, 120000),
+        %                                         resolve connect send  receive
         try
             Connection = winHttp_api::winHttpConnect(Session, ngwHost, ngwPort),
             try
@@ -208,6 +210,8 @@ clauses
         otherText := "",
         Token = tryGetAccessToken(),
         Session = winHttp_api::winHttpOpen("GigaChatApi"),
+        _ = winHttp_native::winHttpSetTimeouts(Session, 10000, 10000, 30000, 120000),
+        %                                         resolve connect send  receive
         try
             Connection = winHttp_api::winHttpConnect(Session, apiHost),
             try
