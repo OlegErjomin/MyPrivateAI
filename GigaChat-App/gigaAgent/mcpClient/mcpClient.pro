@@ -111,25 +111,45 @@ clauses
             Tools = []
         end if.
 
+%
+% --- Helper: validate MCP tool call response ---
+%
+predicates
+    validateToolResponse : (jsonObject, string [out], boolean [out]).
 clauses
+    validateToolResponse(Resp, Text, IsError) :-
+        % Priority 1: JSON-RPC error field
+        if some(Err) = Resp:get_object_optional("error") then
+            Text = string::format("MCP tool error (%): %",
+                Err:get_integer("code"), Err:get_string("message")),
+            IsError = true
+        elseif some(t()) = Resp:get_optional("isError") then
+            % Priority 2: isError flag
+            Text = "Tool returned isError flag without content",
+            IsError = true
+        elseif a(Content) = Resp:get("content") then
+            % Priority 3: content with text parts
+            Text = string::concatWithDelimiter(textParts(Content), "\n"),
+            % If no text fields in content, report data issue
+            if 0 = string::length(Text) then IsError = true else IsError = false end if
+        else
+            % Priority 4: empty result (tool returned successfully but no data)
+            Text = "Tool called successfully but returned empty result",
+            IsError = false
+        end if.
+
     callTool(Name, Arguments, IsError) = Text :-
         Params = jsonObject::new(),
         Params:set_string("name", Name),
         Params:set_object("arguments", Arguments),
-        if o(R) = request("tools/call", o(Params)) then
-            if some(t()) = R:get_optional("isError") then
-                IsError = true
-            else
-                IsError = false
-            end if,
-            if a(Content) = R:get("content") then
-                Text = string::concatWithDelimiter(textParts(Content), "\n")
-            else
-                Text = ""
-            end if
+        R = request("tools/call", o(Params)),
+        % Validate: response must be a JSON object
+        if o(Resp) = R then
+            validateToolResponse(Resp, Text, IsError)
         else
-            Text = "",
-            IsError = false
+            % Invalid response type (null, array, string)
+            Text = string::format("MCP request failed for tool: % (invalid response)", Name),
+            IsError = true
         end if.
 
 predicates
