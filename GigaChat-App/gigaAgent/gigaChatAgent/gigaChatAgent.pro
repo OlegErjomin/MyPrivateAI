@@ -1,4 +1,4 @@
-﻿% Copyright (c) 2026 BestProlog
+% Copyright (c) 2026 BestProlog
 
 implement gigaChatAgent
     open core, json
@@ -32,6 +32,8 @@ clauses
         history := list::append(history, [UserMsg, message("assistant", Answer)]).
 
 % One model round trip. If the model asks for a function, run it and recurse with the result appended.
+% HTTP errors (including the one-time re-authentication after a 401) are handled in gigaChatApi;
+% a request that still fails there raises a user exception.
 predicates
     step : (jsonValue* Functions, jsonValue* Messages, unsigned Depth) -> string Answer.
 clauses

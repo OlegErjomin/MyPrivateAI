@@ -1,6 +1,7 @@
-﻿#requires @"gigaChatAgent\gigaChatAgent.pack"
+#requires @"gigaChatAgent\gigaChatAgent.pack"
 % publicly used packages
 #include @"mcpClient\mcpClient.ph"
+#include @"gigaChatApi\gigaChatApi.ph"
 #include @"pfc\core.ph"
 
 % exported interfaces

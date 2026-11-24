@@ -1,4 +1,4 @@
-﻿#include @"gigaChatApi\gigaChatApi.ph"
+#include @"gigaChatApi\gigaChatApi.ph"
 
 % privately used packages
 #include @"pfc\list\list.ph"
@@ -13,6 +13,9 @@
 
 #include @"utils\utils.ph"
 #include @"mcpClient\mcpClient.ph"
+
+% private classes
+#include @"gigaChatApi\winHttpStatus_native.cl"
 
 % implementations
 #include @"gigaChatApi\gigaChatApi.pro"
