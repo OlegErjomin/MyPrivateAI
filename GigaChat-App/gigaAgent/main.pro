@@ -1,4 +1,4 @@
-% Copyright (c) 2026 BestProlog
+﻿% Copyright (c) 2026 BestProlog
 
 implement main
     open core, json
@@ -50,7 +50,7 @@ class predicates
     conversationLoop : (gigaChatAgent Agent).
 clauses
     conversationLoop(Agent) :-
-        console::write(">> "),
+        console::write("\n>> "),
         Question = console::readLine(),
         string::toLowerCase(Question) <> "quit",
         !,
