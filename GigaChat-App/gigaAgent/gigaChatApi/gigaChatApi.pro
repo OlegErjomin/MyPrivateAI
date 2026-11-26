@@ -84,6 +84,7 @@ clauses
                     winHttp_api::winHttpOpenRequest(Connection, "POST", ngwPath, nullString, winHttp_native::winhttp_no_referer,
                         winHttp_native::winhttp_default_accept_types, winHttp_native::winhttp_flag_secure),
                 try
+                    setNoClientCert(Request),
                     Headers =
                         string::format(
                             "Content-Type: application/x-www-form-urlencoded\r\nAccept: application/json\r\nRqUID: %\r\nAuthorization: Basic %\r\n",
@@ -116,6 +117,7 @@ clauses
                     winHttp_api::winHttpOpenRequest(Connection, "POST", apiPath, nullString, winHttp_native::winhttp_no_referer,
                         winHttp_native::winhttp_default_accept_types, winHttp_native::winhttp_flag_secure),
                 try
+                    setNoClientCert(Request),
                     Headers = string::format("Content-Type: application/json\r\nAccept: application/json\r\nAuthorization: Bearer %\r\n", Token),
                     winHttp_api::winHttpAddRequestHeaders(Request, Headers),
                     % body must be bytes (string8), not a UTF-16 string
@@ -151,6 +153,18 @@ clauses
         memory::releaseHeap(PStatus),
         memory::releaseHeap(PLen),
         if b_false = Ok then
+            exception::raise_nativeCallExceptionLite()
+        end if.
+
+% Send NO client certificate. Must be called before winHttpSendRequest.
+predicates
+    setNoClientCert : (winHttp_native::hinternet Request).
+clauses
+    setNoClientCert(Request) :-
+        R =
+            winHttp_native::winHttpSetOption(Request, winHttp_native::winhttp_option_client_cert_context,
+                winHttp_native::winhttp_no_client_cert_context, 0),
+        if R = b_false then
             exception::raise_nativeCallExceptionLite()
         end if.
 
@@ -286,6 +300,7 @@ clauses
                     winHttp_api::winHttpOpenRequest(Connection, "POST", apiPath, nullString, winHttp_native::winhttp_no_referer,
                         winHttp_native::winhttp_default_accept_types, winHttp_native::winhttp_flag_secure),
                 try
+                    setNoClientCert(Request),
                     Headers = string::format("Content-Type: application/json\r\nAccept: text/event-stream\r\nAuthorization: Bearer %\r\n", Token),
                     winHttp_api::winHttpAddRequestHeaders(Request, Headers),
                     Body = json::asUtf8(JsonRequest),
@@ -326,7 +341,8 @@ clauses
         if string::length(Line) >= 5 and string::front(Line, 5, Front, Rest) and Front = "data:" then
             Data = string::trim(Rest),
             if "[DONE]" = Data then
-                Done = true
+                Done = true,
+                console::nl()
             else
                 sawEvent := true,
                 if o(Chunk) = json::fromString(Data) then
