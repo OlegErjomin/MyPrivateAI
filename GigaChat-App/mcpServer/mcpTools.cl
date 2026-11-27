@@ -5,7 +5,6 @@ class mcpTools
 
 predicates
     register : (jsonRpcApiMap{mcpSession} Api).
-    % @short Register ping, tools/list, tools/call and the notifications this server handles.
-    % @end
+    % registers "tools/list" and "tools/call"
 
 end class mcpTools

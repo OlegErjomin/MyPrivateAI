@@ -1,4 +1,4 @@
-﻿#requires @"main.pack"
+#requires @"main.pack"
 % publicly used packages
 #include @"pfc\core.ph"
 #include @"pfc\web\json\json.ph"
@@ -10,4 +10,5 @@
 % exported classes
 #include @"mcpSession.cl"
 #include @"main.cl"
+#include @"onecQuery.cl"
 #include @"mcpTools.cl"

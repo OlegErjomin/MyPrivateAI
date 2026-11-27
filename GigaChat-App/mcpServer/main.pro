@@ -18,8 +18,10 @@ clauses
             programControl::setApplicationExitCode(2)
         else
             % place your own code here
+            _Result = exe_native::coInitializeEx(null, 0),
             initApi(),
-            runStdio()
+            runStdio(),
+            exe_native::coUninitialize()
         end if.
 
 class predicates
@@ -134,4 +136,5 @@ clauses
 end implement main
 
 goal
+    %mainExe::run(main::run, exe_api::multiThread).
     console::runUtf8(main::run).

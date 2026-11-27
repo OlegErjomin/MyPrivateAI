@@ -2,6 +2,7 @@
 #include @"main.ph"
 
 % privately used packages
+#include @"pfc\application\exe\exe.ph"
 #include @"pfc\exception\exceptionDump\exceptionDump.ph"
 #include @"pfc\string\string.ph"
 #include @"pfc\async\async.ph"
@@ -12,8 +13,15 @@
 #include @"pfc\core.ph"
 #include @"pfc\stream\stream.ph"
 #include @"pfc\time\time.ph"
+#include @"pfc\list\list.ph"
+#include @"pfc\math\math.ph"
+#include @"pfc\fileSystem\fileSystem.ph"
+#include @"pfc\std\std.ph"
+#include @"pfc\com\com.ph"
+#include @"pfc\com\comSupport\comSupport.ph"
 
 % implementations
 #include @"mcpSession.pro"
 #include @"main.pro"
+#include @"onecQuery.pro"
 #include @"mcpTools.pro"
